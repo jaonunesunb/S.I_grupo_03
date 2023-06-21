@@ -37,7 +37,7 @@ export const createdProfessorService = async (
     });
 
     if (!macroAreaRecord) {
-      throw new AppError("Macroárea não encontrada", 404);
+      throw new AppError("Macro área não encontrada", 404);
     }
 
     // Obter o ID da área com base no nome fornecido e no ID da macroárea
@@ -55,7 +55,7 @@ export const createdProfessorService = async (
     });
 
     if (!subAreaRecord) {
-      throw new AppError("Subárea não encontrada", 404);
+      throw new AppError("Sub área não encontrada", 404);
     }
 
     // Criar o usuário com as informações fornecidas
