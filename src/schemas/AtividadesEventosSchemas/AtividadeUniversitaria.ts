@@ -9,9 +9,9 @@ export const AtividadeUniversitariaModel: any = z.object({
   dataInicio: z.string(),
   dataFim: z.string(),
   tipoAtividade: z.string(),
-  orientador: ServidorModel.nullable(),
-  aluno: AlunoModel.nullable(),
-  areaDeInteresse: AreaInteresseModel.nullable(),
+  orientador: z.nullable(ServidorModel),
+  aluno: z.nullable(AlunoModel),
+  areaDeInteresse: z.nullable(AreaInteresseModel),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

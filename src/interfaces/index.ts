@@ -48,6 +48,11 @@ export interface IAluno {
   AtividadeUniversitaria: AtividadeUniversitaria[];
 }
 
+export interface IUser {
+  email: string;
+  password: string;
+}
+
 export type ITipoServidor = "Tecnico" | "Docente";
 
 export type ITipoAluno = "Graduacao" | "Pos_graduacao";

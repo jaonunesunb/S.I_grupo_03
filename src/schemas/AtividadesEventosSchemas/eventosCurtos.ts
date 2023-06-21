@@ -8,7 +8,7 @@ export const EventoCurtoModel: any = z.object({
   dataInicio: z.string(),
   dataFim: z.string(),
   tipoEvento: z.string(),
-  congresso: EventoModel.nullable(),
+  congresso: z.union([EventoModel, z.undefined()]),
   orientador: ServidorModel,
   createdAt: z.string(),
   updatedAt: z.string(),

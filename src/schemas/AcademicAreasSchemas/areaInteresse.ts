@@ -8,10 +8,9 @@ import { AlunoModel } from "../userSchemas";
 
 export const AreaInteresseModel: any = z.object({
   id: z.number(),
-  usuario_servidor: ServidorModel.nullable(),
-  usuario_aluno: AlunoModel.nullable(),
+  usuario_servidor: ServidorModel,
+  usuario_aluno: AlunoModel,
   macroArea: MacroAreaModel,
-  macroAreaId: z.number(),
   area: AreaModel,
   subArea: SubAreaModel,
   AtividadeUniversitaria: z.array(AtividadeUniversitariaModel),

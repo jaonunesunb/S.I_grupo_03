@@ -3,13 +3,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator client {
+  provider = "prisma-client-js"
+}
+
 model Servidor {
   id                    Int                      @id @default(autoincrement())
   nome                  String
   email                 String                   @unique
   password              String
   foto                  String
-  matricula             String?                  @unique
+  descricao             String?
+  linkedin              String?
+  matricula             String                   @unique
   departamento          String
   orientador            AtividadeUniversitaria[]
   orientadorEventoCurto EventoCurto[]
@@ -23,7 +29,9 @@ model Aluno {
   email                  String                   @unique
   password               String
   foto                   String
-  matricula              String?                  @unique
+  descricao              String?
+  linkedin               String?
+  matricula              String                   @unique
   departamento           String
   tipo                   TipoAluno // Graduação ou Pós
   areasInteresse         AreaInteresse[]
@@ -40,16 +48,31 @@ enum TipoAluno {
   Pos_graduacao
 }
 
+model AreaInteresse {
+  id                     Int                      @id @default(autoincrement())
+  usuario_servidor       Servidor?                @relation(fields: [usuario_servidorID], references: [id])
+  usuario_servidorID     Int?
+  usuario_aluno          Aluno?                   @relation(fields: [usuario_alunoID], references: [id])
+  usuario_alunoID        Int?
+  macroArea              MacroArea                @relation(fields: [macroAreaId], references: [id])
+  macroAreaId            Int
+  area                   Area                     @relation(fields: [areaId], references: [id])
+  areaId                 Int
+  subArea                SubArea                  @relation(fields: [subAreaId], references: [id])
+  subAreaId              Int
+  AtividadeUniversitaria AtividadeUniversitaria[]
+}
+
 model MacroArea {
   id             Int             @id @default(autoincrement())
-  nome           String
-  areas          Area[]
+  nome           String         @unique
   areasInteresse AreaInteresse[]
+  area           Area[]
 }
 
 model Area {
   id            Int             @id @default(autoincrement())
-  nome          String
+  nome          String         @unique
   macroArea     MacroArea       @relation(fields: [macroAreaId], references: [id])
   macroAreaId   Int
   subAreas      SubArea[]
@@ -58,12 +81,13 @@ model Area {
 
 model SubArea {
   id            Int             @id @default(autoincrement())
-  nome          String
+  nome          String         @unique
   area          Area            @relation(fields: [areaId], references: [id])
   areaId        Int
   eventos       Evento[]
   AreaInteresse AreaInteresse[]
 }
+
 
 model Evento {
   id          Int           @id @default(autoincrement())
@@ -106,17 +130,4 @@ model AtividadeUniversitaria {
   updatedAt         DateTime       @default(now()) @map(name: "updated_at")
 }
 
-model AreaInteresse {
-  id                     Int                      @id @default(autoincrement())
-  usuario_servidor       Servidor?                @relation(fields: [usuario_servidorID], references: [id])
-  usuario_servidorID     Int?
-  usuario_aluno          Aluno?                   @relation(fields: [usuario_alunoID], references: [id])
-  usuario_alunoID        Int?
-  macroArea              MacroArea                @relation(fields: [macroAreaId], references: [id])
-  macroAreaId            Int
-  area                   Area                     @relation(fields: [areaId], references: [id])
-  areaId                 Int
-  subArea                SubArea                  @relation(fields: [subAreaId], references: [id])
-  subAreaId              Int
-  AtividadeUniversitaria AtividadeUniversitaria[]
-}
+

@@ -11,7 +11,9 @@ CREATE TABLE "Servidor" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "foto" TEXT NOT NULL,
-    "matricula" TEXT,
+    "descricao" TEXT,
+    "linkedin" TEXT,
+    "matricula" TEXT NOT NULL,
     "departamento" TEXT NOT NULL,
     "tipo" "TipoServidor" NOT NULL,
 
@@ -25,7 +27,9 @@ CREATE TABLE "Aluno" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "foto" TEXT NOT NULL,
-    "matricula" TEXT,
+    "descricao" TEXT,
+    "linkedin" TEXT,
+    "matricula" TEXT NOT NULL,
     "departamento" TEXT NOT NULL,
     "tipo" "TipoAluno" NOT NULL,
 

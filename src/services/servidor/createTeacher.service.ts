@@ -5,14 +5,14 @@ import { ServidorModel } from "../../schemas/userSchemas";
 
 const prisma = new PrismaClient();
 
-export const createdProfessorService = async (
+export const createProfessorService = async (
   dataBody: IServidorRequest
 ): Promise<IServidor> => {
   const { macroArea, area, subArea, ...res } = dataBody;
 
   try {
     // Verificar se o email já está cadastrado
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.servidor.findUnique({
       where: { email: dataBody.email },
     });
 
@@ -22,7 +22,7 @@ export const createdProfessorService = async (
 
     // Verificar se a matrícula já está cadastrada
     if (dataBody.matricula) {
-      const existingMatricula = await prisma.user.findUnique({
+      const existingMatricula = await prisma.servidor.findUnique({
         where: { matricula: dataBody.matricula },
       });
 
@@ -31,40 +31,45 @@ export const createdProfessorService = async (
       }
     }
 
-    // Obter o ID da macroárea com base no nome fornecido
-    const macroAreaRecord = await prisma.macroArea.findUnique({
+    // Obter as IDs das áreas de interesse
+    const macroAreaObj = await prisma.macroArea.findFirst({
       where: { nome: macroArea },
     });
 
-    if (!macroAreaRecord) {
-      throw new AppError("Macro área não encontrada", 404);
+    if (!macroAreaObj) {
+      throw new AppError("Macroárea não encontrada", 404);
     }
 
-    // Obter o ID da área com base no nome fornecido e no ID da macroárea
-    const areaRecord = await prisma.area.findUnique({
-      where: { nome: area, macroAreaId: macroAreaRecord.id },
+    const areaObj = await prisma.area.findFirst({
+      where: { nome: area },
     });
 
-    if (!areaRecord) {
+    if (!areaObj) {
       throw new AppError("Área não encontrada", 404);
     }
 
-    // Obter o ID da subárea com base no nome fornecido e no ID da área
-    const subAreaRecord = await prisma.subArea.findUnique({
-      where: { nome: subArea, areaId: areaRecord.id },
+    const subAreaObj = await prisma.subArea.findFirst({
+      where: { nome: subArea },
     });
 
-    if (!subAreaRecord) {
-      throw new AppError("Sub área não encontrada", 404);
+    if (!subAreaObj) {
+      throw new AppError("Subárea não encontrada", 404);
     }
 
     // Criar o usuário com as informações fornecidas
-    const createUser = await prisma.user.create({
+    const createUser = await prisma.servidor.create({
       data: {
         ...res,
-        macroAreaId: macroAreaRecord.id,
-        areaId: areaRecord.id,
-        subAreaId: subAreaRecord.id,
+        areasInteresse: {
+          create: {
+            macroArea: { connect: { id: macroAreaObj.id } },
+            area: { connect: { id: areaObj.id } },
+            subArea: { connect: { id: subAreaObj.id } },
+          },
+        },
+      },
+      include: {
+        areasInteresse: true,
       },
     });
 
