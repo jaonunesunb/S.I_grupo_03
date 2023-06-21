@@ -1,9 +1,5 @@
 import { z } from "zod";
-import { AtividadeUniversitariaModel } from "./AtividadesEventosSchemas/AtividadeUniversitaria";
-import { AreaInteresseModel } from "./AcademicAreasSchemas/areaInteresse";
-import { EventoCurtoModel } from "./AtividadesEventosSchemas/eventosCurtos";
 
-// Enumerations
 export const TipoServidorEnum = z.enum(["Tecnico", "Docente"]);
 export const TipoAlunoEnum = z.enum(["Graduacao", "Pos_graduacao"]);
 
@@ -15,12 +11,11 @@ export const ServidorModel = z.object({
   foto: z.string(),
   matricula: z.string().nullable(),
   departamento: z.string(),
-  orientador: z.array(AtividadeUniversitariaModel.nullable()),
-  orientadorEventoCurto: z.array(EventoCurtoModel),
+  orientador: z.array(z.unknown()), // Replace `z.unknown()` with the appropriate schema for AtividadeUniversitaria[]
+  orientadorEventoCurto: z.array(z.unknown()), // Replace `z.unknown()` with the appropriate schema for EventoCurto[]
   tipo: TipoServidorEnum,
-  areasInteresse: z.array(AreaInteresseModel),
+  areasInteresse: z.array(z.unknown()), // Replace `z.unknown()` with the appropriate schema for AreaInteresse[]
 });
-
 
 export const AlunoModel = z.object({
   id: z.number(),
@@ -31,6 +26,6 @@ export const AlunoModel = z.object({
   matricula: z.string().nullable(),
   departamento: z.string(),
   tipo: TipoAlunoEnum,
-  areasInteresse: z.array(AreaInteresseModel),
-  AtividadeUniversitaria: z.array(AtividadeUniversitariaModel),
+  areasInteresse: z.array(z.unknown()), // Replace `z.unknown()` with the appropriate schema for AreaInteresse[]
+  AtividadeUniversitaria: z.array(z.unknown()), // Replace `z.unknown()` with the appropriate schema for AtividadeUniversitaria[]
 });
