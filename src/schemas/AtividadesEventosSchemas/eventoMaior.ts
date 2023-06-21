@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SubAreaModel } from "../AcademicAreasSchemas";
+import { SubAreaModel } from "../AcademicAreasSchemas/macroArea";
 import { EventoCurtoModel } from "./eventosCurtos";
 
 export const EventoModel = z.object({
@@ -9,5 +9,5 @@ export const EventoModel = z.object({
   subArea: SubAreaModel,
   createdAt: z.string(),
   updatedAt: z.string(),
-  EventoCurto: z.array(EventoCurtoModel), // Replace `z.unknown()` with the appropriate schema for EventoCurto[]
+  EventoCurto: z.array(EventoCurtoModel),
 });

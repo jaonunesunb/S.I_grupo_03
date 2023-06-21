@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { MacroAreaModel } from "./macroArea";
 import { AreaModel } from ".";
-import { SubAreaModel } from ".";
+import { SubAreaModel } from "./macroArea";
 import { AtividadeUniversitariaModel } from "../AtividadesEventosSchemas/AtividadeUniversitaria";
-import { ServidorModel } from "..";
-import { AlunoModel } from "..";
+import { ServidorModel } from "../userSchemas";
+import { AlunoModel } from "../userSchemas";
 
-export const AreaInteresseModel = z.object({
+export const AreaInteresseModel: any = z.object({
   id: z.number(),
   usuario_servidor: ServidorModel.nullable(),
   usuario_aluno: AlunoModel.nullable(),

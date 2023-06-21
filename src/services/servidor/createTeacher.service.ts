@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { AppError } from "../../errors/AppError";
 import { IServidor, IServidorRequest } from "../../interfaces";
-import { ServidorModel } from "../../schemas";
+import { ServidorModel } from "../../schemas/userSchemas";
 
 const prisma = new PrismaClient();
 

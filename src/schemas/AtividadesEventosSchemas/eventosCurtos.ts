@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { ServidorModel } from "..";
+import { ServidorModel } from "../userSchemas";
 import { EventoModel } from "./eventoMaior";
 
-export const EventoCurtoModel = z.object({
+export const EventoCurtoModel: any = z.object({
   id: z.number(),
   nome: z.string(),
   dataInicio: z.string(),

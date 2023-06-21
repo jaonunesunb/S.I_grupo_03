@@ -4,7 +4,7 @@ export interface IServidor {
   email: string;
   password: string;
   foto: string;
-  matricula: string | null;
+  matricula: string;
   departamento: string;
   orientador: AtividadeUniversitaria[];
   orientadorEventoCurto: EventoCurto[];
@@ -17,7 +17,7 @@ export interface IServidorRequest {
   email: string;
   password: string;
   foto: string;
-  matricula: string | null;
+  matricula: string;
   departamento: string;
   tipo: ITipoServidor;
   macroArea: string;
@@ -30,7 +30,7 @@ export interface IServidorResponse {
   nome: string;
   email: string;
   foto: string;
-  matricula: string | null;
+  matricula: string;
   departamento: string;
   tipo: ITipoServidor;
 }
@@ -41,7 +41,7 @@ export interface IAluno {
   email: string;
   password: string;
   foto: string;
-  matricula: string | null;
+  matricula: string;
   departamento: string;
   tipo: ITipoAluno;
   areasInteresse: AreaInteresse[];
