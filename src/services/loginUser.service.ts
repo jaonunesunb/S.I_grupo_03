@@ -35,6 +35,8 @@ export const loginService = async (data: IUser) => {
 
     return { token };
   } catch (error) {
+    // Será que esse try and catch é uma boa ideia?
+    // Não é melhor deixar falhar mesmo não?
     console.error("Error during login:", error);
     throw error;
   }
