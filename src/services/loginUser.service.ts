@@ -8,23 +8,54 @@ const prisma = new PrismaClient();
 
 export const loginService = async (data: IUser) => {
   try {
-    const userExist = await prisma.aluno.findUnique({
+    let userExist: any = null;
+
+    const alunoExist = await prisma.aluno.findUnique({
       where: { email: data.email },
     });
 
-    if (!userExist) {
+    const servidorExist = await prisma.servidor.findUnique({
+      where: { email: data.email },
+    });
+
+    if (!alunoExist && !servidorExist) {
       throw new AppError("Email or password invalid", 403);
     }
 
-    const passwordMatch = await compare(data.password, userExist.password);
+    if (servidorExist) {
+      userExist = servidorExist;
 
-    if (!passwordMatch) {
-      throw new AppError("Email or password invalid", 403);
+      const passwordMatch = await compare(
+        data.password,
+        servidorExist.password
+      );
+
+      if (!passwordMatch) {
+        throw new AppError("Email or password invalid", 403);
+      }
+    }
+
+    if (alunoExist) {
+      userExist = alunoExist;
+
+      const passwordMatch = await compare(data.password, alunoExist.password);
+
+      if (!passwordMatch) {
+        throw new AppError("Email or password invalid", 403);
+      }
+    }
+
+    let userType: "aluno" | "servidor" = "aluno";
+    if (alunoExist && alunoExist.matricula) {
+      userType = "aluno";
+    } else if (servidorExist && servidorExist.matricula) {
+      userType = "servidor";
     }
 
     const token = jwt.sign(
       {
         id: userExist.id,
+        userType: userType,
       },
       process.env.SECRET_KEY as string,
       {
