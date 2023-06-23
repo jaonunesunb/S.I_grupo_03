@@ -65,14 +65,16 @@ model AreaInteresse {
 
 model MacroArea {
   id             Int             @id @default(autoincrement())
-  nome           String         @unique
+  tabelaId       String
+  nome           String          @unique
   areasInteresse AreaInteresse[]
   area           Area[]
 }
 
 model Area {
   id            Int             @id @default(autoincrement())
-  nome          String         @unique
+  tabelaId      String
+  nome          String          @unique
   macroArea     MacroArea       @relation(fields: [macroAreaId], references: [id])
   macroAreaId   Int
   subAreas      SubArea[]
@@ -81,13 +83,13 @@ model Area {
 
 model SubArea {
   id            Int             @id @default(autoincrement())
-  nome          String         @unique
+  tabelaId      String
+  nome          String
   area          Area            @relation(fields: [areaId], references: [id])
   areaId        Int
   eventos       Evento[]
   AreaInteresse AreaInteresse[]
 }
-
 
 model Evento {
   id          Int           @id @default(autoincrement())
@@ -129,5 +131,3 @@ model AtividadeUniversitaria {
   createdAt         DateTime       @default(now()) @map(name: "created_at")
   updatedAt         DateTime       @default(now()) @map(name: "updated_at")
 }
-
-

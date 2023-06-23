@@ -3,7 +3,8 @@ import express from "express";
 import "express-async-errors";
 import cors from "cors";
 import handleError from "./errors/handleError";
-import userRoutes from "./routes/user/users.routes";
+import servidorRoutes from "./routes/user/users.routes";
+import { loginRoutes } from "./routes/user/users.routes";
 
 const app = express();
 
@@ -16,7 +17,9 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-app.use("/api", userRoutes);
+app.use("/servidor", servidorRoutes);
+
+app.use("/login", loginRoutes)
 
 app.use(handleError);
 

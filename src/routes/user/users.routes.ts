@@ -4,9 +4,12 @@ import {
   loginController,
 } from "../../controllers/superUser/users.controllers";
 
-const userRoutes = express.Router();
+const servidorRoutes = express.Router();
 
-userRoutes.post("/login", loginController);
-userRoutes.post("/admRegister", createProfessorController);
+servidorRoutes.post("", createProfessorController);
 
-export default userRoutes;
+export default servidorRoutes;
+
+export const loginRoutes = express.Router();
+
+loginRoutes.post("", loginController);
