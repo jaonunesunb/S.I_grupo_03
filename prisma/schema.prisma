@@ -46,14 +46,14 @@ model Departamento {
 
 model MacroArea {
   id       Int    @id @default(autoincrement())
-  tabelaId String
+  tabelaId String @unique
   nome     String @unique
   area     Area[]
 }
 
 model Area {
   id           Int            @id @default(autoincrement())
-  tabelaId     String
+  tabelaId     String         @unique
   nome         String         @unique
   macroArea    MacroArea      @relation(fields: [macroAreaId], references: [id])
   macroAreaId  Int
@@ -63,7 +63,7 @@ model Area {
 
 model SubArea {
   id       Int       @id @default(autoincrement())
-  tabelaId String
+  tabelaId String    @unique
   nome     String
   area     Area      @relation(fields: [areaId], references: [id])
   areaId   Int

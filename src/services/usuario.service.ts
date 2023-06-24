@@ -1,11 +1,20 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { compare } from "bcryptjs";
+
 import { IUsuario, IUsuarioRegistrar, IUsuarioLogin } from "../interfaces";
 import { AppError } from "../errors/AppError";
-import { ServidorModel } from "../schemas/userSchemas";
+import { Usuario } from "../schemas";
+
 
 const prisma = new PrismaClient();
+
+const hashPassword = async (password: string) => {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  
+  return hashedPassword;
+};
 
 const userIfExists = async (email: string) => {
   const user = await prisma.usuario.findUnique({
@@ -23,7 +32,7 @@ export const loginService = async (data: IUsuarioLogin) => {
       throw new AppError("Email or password invalid", 403);
     }
 
-    const passwordMatch = await compare(data.senha, user.senha);
+    const passwordMatch = await bcrypt.compare(data.senha, user.senha);
 
     if (!passwordMatch) {
       throw new AppError("Email or password invalid", 403);
@@ -88,20 +97,20 @@ export const registerUserService = async (
       data: {
         nome: dataBody.nome,
         email: dataBody.email,
-        senha: dataBody.senha,
+        senha: await hashPassword(dataBody.senha),
         matricula: dataBody.matricula,
         departamentoId: departamento.id,
         tipo: dataBody.tipoUsuario,
-        subAreasInteresse: { connect: subAreas },
+        subAreasInteresse: {
+          connect: subAreas.map((subArea) => ({ id: subArea.id })),
+        },
       },
       include: {
         subAreasInteresse: true,
       },
     });
 
-    const returnUser = ServidorModel.parse(createUser);
-
-    return returnUser;
+    return Usuario.parse(createUser);
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
     throw error;
