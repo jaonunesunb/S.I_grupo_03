@@ -20,7 +20,7 @@ model Usuario {
   id                Int           @id @default(autoincrement())
   nome              String
   email             String        @unique
-  password          String
+  senha             String
   matricula         String        @unique
   departamento      Departamento? @relation(fields: [departamentoId], references: [id])
   departamentoId    Int?
@@ -35,7 +35,7 @@ model Usuario {
 
 model Departamento {
   id      Int       @id @default(autoincrement())
-  nome    String
+  nome    String    @unique
   area    Area      @relation(fields: [areaId], references: [id])
   areaId  Int
   Usuario Usuario[]
@@ -82,6 +82,7 @@ enum TipoEvento {
 
 model Evento {
   id                   Int           @id @default(autoincrement())
+  public_id            String        @unique
   nome                 String
   descricao            String
   tipoEvento           TipoEvento

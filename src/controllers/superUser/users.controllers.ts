@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { loginService } from "../../services/loginUser.service";
-import { createProfessorService } from "../../services/servidor/createTeacher.service";
+import { loginService } from "../../services/usuario.service";
+import { createProfessorService } from "../../services/usuario/createTeacher.service";
 
 export const loginController = async (req: Request, res: Response) => {
   try {

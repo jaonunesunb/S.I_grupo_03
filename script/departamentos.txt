@@ -1,0 +1,53 @@
+Departamento de Administração
+Departamento de Antropologia
+Departamento de Arquitetura e Urbanismo
+Departamento de Artes Cênicas
+Departamento de Artes Visuais
+Departamento de Biologia Celular
+Departamento de Biologia Molecular
+Departamento de Ciência da Computação
+Departamento de Ciências da Informação
+Departamento de Ciências Farmacêuticas
+Departamento de Ciências Fisiológicas
+Departamento de Ciências Florestais
+Departamento de Ciências Moleculares
+Departamento de Comunicação
+Departamento de Direito
+Departamento de Economia
+Departamento de Educação Física
+Departamento de Educação
+Departamento de Engenharia Civil e Ambiental
+Departamento de Engenharia Elétrica
+Departamento de Engenharia Mecânica
+Departamento de Estatística
+Departamento de Farmácia
+Departamento de Filosofia
+Departamento de Física
+Departamento de Geociências
+Departamento de História
+Departamento de Letras
+Departamento de Matemática
+Departamento de Medicina
+Departamento de Medicina Veterinária
+Departamento de Música
+Departamento de Nutrição
+Departamento de Odontologia
+Departamento de Patologia
+Departamento de Política
+Departamento de Psicologia
+Departamento de Química
+Departamento de Relações Internacionais
+Departamento de Saúde Coletiva
+Departamento de Serviço Social
+Departamento de Sociologia
+Departamento de Teoria Literária e Literaturas
+Departamento de Turismo
+Departamento de Estudos Latino-Americanos
+Departamento de Estudos Africanos
+Departamento de Estudos Portugueses
+Departamento de Estudos Românicos
+Departamento de Estudos de Linguagem
+Departamento de Estudos de Gênero
+Departamento de Estudos do Lazer
+Departamento de Estudos do Meio Ambiente e Sociedade
+Departamento de Estudos do Trabalho

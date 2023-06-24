@@ -1,8 +1,33 @@
-import readCSVFile, { CSVRow } from "./csvReader";
-
 import { PrismaClient, Area, MacroArea, SubArea } from "@prisma/client";
 import { exit } from "process";
+import fs from "fs";
+import csvParser from "csv-parser";
 import readline from "readline";
+
+interface CSVRow {
+  TIPO: string;
+  ID: string;
+  NOME: string;
+  DEPENDENCIA: string;
+}
+
+function readCSVFile(filePath: string): Promise<CSVRow[]> {
+  return new Promise<CSVRow[]>((resolve, reject) => {
+    const rows: CSVRow[] = [];
+
+    fs.createReadStream(filePath)
+      .pipe(csvParser())
+      .on("data", (data: CSVRow) => {
+        rows.push(data);
+      })
+      .on("end", () => {
+        resolve(rows);
+      })
+      .on("error", (error: Error) => {
+        reject(error);
+      });
+  });
+}
 
 const prisma = new PrismaClient();
 
@@ -27,11 +52,10 @@ const removeEveryRow = async () => {
           await prisma.area.deleteMany();
           await prisma.macroArea.deleteMany();
 
-
           resolve();
         } else {
           console.log("Saindo do programa...");
-          exit(0)
+          exit(0);
         }
       }
     );
@@ -62,7 +86,7 @@ type AllAreas = {
 };
 
 const insertRowDatabase = async (row: CSVRow, idx: number, areas: AllAreas) => {
-  console.log(row)
+  console.log(row);
 
   switch (row.TIPO) {
     case "MACRO":
@@ -74,7 +98,7 @@ const insertRowDatabase = async (row: CSVRow, idx: number, areas: AllAreas) => {
       break;
     case "AREA":
       if (!(row.DEPENDENCIA in areas.macro)) {
-        console.log(row)
+        console.log(row);
         throw new Error(`${row.DEPENDENCIA} not in areas.macro`);
       }
 
@@ -123,7 +147,7 @@ const insertRowDatabase = async (row: CSVRow, idx: number, areas: AllAreas) => {
 const main = async () => {
   await enforceEmptyTable();
 
-  console.log("Populando banco de dados...")
+  console.log("Populando banco de dados...");
 
   readCSVFile(filePath)
     .then(async (rows: CSVRow[]) => {
@@ -133,7 +157,7 @@ const main = async () => {
         await insertRowDatabase(rows[i], i, areas);
       }
 
-      exit(0)
+      exit(0);
     })
     .catch((error: Error) => {
       console.error("Error reading CSV file:", error);

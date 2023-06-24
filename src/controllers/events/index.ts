@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginService } from "../../services/loginUser.service";
+import { loginService } from "../../services/usuario.service";
 
 export const createEventController = async (req: Request, res: Response) => {
   try {
