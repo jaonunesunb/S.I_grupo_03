@@ -1,67 +1,41 @@
-export interface IServidor {
-  id: number;
+import { TipoUsuario } from "@prisma/client";
+
+// ========================== Usuários ==========================
+
+export interface IUsuarioLogin {
+  email: string;
+  senha: string;
+}
+
+export interface IUsuarioRegistrar {
   nome: string;
   email: string;
-  password: string;
-  foto: string;
+  senha: string;
   matricula: string;
   departamento: string;
-  orientador: AtividadeUniversitaria[];
-  orientadorEventoCurto: EventoCurto[];
-  tipo: ITipoServidor;
-  areasInteresse: AreaInteresse[];
+  tipoUsuario: TipoUsuario
+  subAreasInteresse: string[];
 }
 
-export interface IServidorRequest {
+export interface IUsuario {
+  id: number,
   nome: string;
   email: string;
-  password: string;
-  foto: string;
+  senha: string;
   matricula: string;
   departamento: string;
-  tipo: ITipoServidor;
-  macroArea: string;
-  area: string;
-  subArea: string;
+  tipoUsuario: TipoUsuario
+  subAreasInteresse: string[];
 }
 
-export interface IServidorResponse {
-  id: number;
-  nome: string;
-  email: string;
-  foto: string;
-  matricula: string;
-  departamento: string;
-  tipo: ITipoServidor;
-}
+// ==============================================================
 
-export interface IAluno {
-  id: number;
-  nome: string;
-  email: string;
-  password: string;
-  foto: string;
-  matricula: string;
-  departamento: string;
-  tipo: ITipoAluno;
-  areasInteresse: AreaInteresse[];
-  AtividadeUniversitaria: AtividadeUniversitaria[];
-}
-
-export interface IUser {
-  email: string;
-  password: string;
-}
-
-export type ITipoServidor = "Tecnico" | "Docente";
-
-export type ITipoAluno = "Graduacao" | "Pos_graduacao";
+// ======================== Tabela CAPES ========================
 
 export interface IMacroArea {
   id: number;
   nome: string;
   areas: Area[];
-  areasInteresse: AreaInteresse[];
 }
 
 export interface Area {
@@ -69,58 +43,35 @@ export interface Area {
   nome: string;
   macroArea: IMacroArea;
   subAreas: SubArea[];
-  AreaInteresse: AreaInteresse[];
 }
 
 export interface SubArea {
   id: number;
   nome: string;
   area: Area;
-  eventos: Evento[];
-  AreaInteresse: AreaInteresse[];
 }
 
-export interface Evento {
-  id: number;
-  nome: string;
-  tipoEvento: string;
-  subArea: SubArea;
-  createdAt: Date;
-  updatedAt: Date;
-  EventoCurto: EventoCurto[];
+// ==============================================================
+
+// =========================== Eventos ==========================
+
+export enum TipoEvento {
+  EventoAcademico,
+  EventoCultural
 }
 
-export interface EventoCurto {
-  id: number;
+export interface IEvento {
   nome: string;
+  descricao: string;
+  tipoEvento: TipoEvento;
+  urlMaisInfo?: string;
+  urlInscricao?: string;
+  criadorEmail: string;
+  eventoMaiorId: string;
+  departamentoNome: string;
   dataInicio: Date;
   dataFim: Date;
-  tipoEvento: string;
-  congresso: Evento | null;
-  orientador: IServidor;
-  createdAt: Date;
-  updatedAt: Date;
+  subAreasRelacionadas: SubArea[];
 }
 
-export interface AtividadeUniversitaria {
-  id: number;
-  nome: string;
-  dataInicio: Date;
-  dataFim: Date;
-  tipoAtividade: string;
-  orientador: IServidor | null;
-  aluno: IAluno | null;
-  areaDeInteresse: AreaInteresse | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface AreaInteresse {
-  id: number;
-  usuario_servidor: IServidor | null;
-  usuario_aluno: IAluno | null;
-  macroArea: IMacroArea;
-  area: Area;
-  subArea: SubArea;
-  AtividadeUniversitaria: AtividadeUniversitaria[];
-}
+// ==============================================================

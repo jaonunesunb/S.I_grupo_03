@@ -1,12 +1,12 @@
 import express from "express";
 import {
-  createProfessorController,
+  registerUserController,
   loginController,
 } from "../../controllers/superUser/users.controllers";
 
 const userRoutes = express.Router();
 
 userRoutes.post("/login", loginController);
-userRoutes.post("/admRegister", createProfessorController);
+userRoutes.post("/register", registerUserController);
 
 export default userRoutes;

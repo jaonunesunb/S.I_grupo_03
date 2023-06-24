@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
-import { loginService } from "../../services/loginUser.service";
-import { createProfessorService } from "../../services/servidor/createTeacher.service";
+import {
+  loginService,
+  registerUserService,
+} from "../../services/usuario.service";
 
 export const loginController = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const { email, senha } = req.body;
 
-    const result = await loginService({ email, password });
+    const result = await loginService({ email, senha });
 
     // Return o token
     res.json(result);
@@ -16,12 +18,9 @@ export const loginController = async (req: Request, res: Response) => {
   }
 };
 
-export const createProfessorController = async (
-  req: Request,
-  res: Response
-) => {
+export const registerUserController = async (req: Request, res: Response) => {
   try {
-    const result = await createProfessorService(req.body);
+    const result = await registerUserService(req.body);
     res.status(201).json(result);
   } catch (error) {
     res.status(500).json({ error: "Failed to create professor" });

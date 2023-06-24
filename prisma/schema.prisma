@@ -7,127 +7,98 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Servidor {
-  id                    Int                      @id @default(autoincrement())
-  nome                  String
-  email                 String                   @unique
-  password              String
-  foto                  String
-  descricao             String?
-  linkedin              String?
-  matricula             String                   @unique
-  departamento          String
-  orientador            AtividadeUniversitaria[]
-  orientadorEventoCurto EventoCurto[]
-  tipo                  TipoServidor // SERVIDOR Técnico/Adm ou Docente
-  areasInteresse        AreaInteresse[]
-}
+// ========================== Usuários ==========================
 
-model Aluno {
-  id                     Int                      @id @default(autoincrement())
-  nome                   String
-  email                  String                   @unique
-  password               String
-  foto                   String
-  descricao              String?
-  linkedin               String?
-  matricula              String                   @unique
-  departamento           String
-  tipo                   TipoAluno // Graduação ou Pós
-  areasInteresse         AreaInteresse[]
-  AtividadeUniversitaria AtividadeUniversitaria[]
-}
-
-enum TipoServidor {
+enum TipoUsuario {
   Tecnico
   Docente
-}
-
-enum TipoAluno {
   Graduacao
-  Pos_graduacao
+  PosGraduacao
 }
 
-model AreaInteresse {
-  id                     Int                      @id @default(autoincrement())
-  usuario_servidor       Servidor?                @relation(fields: [usuario_servidorID], references: [id])
-  usuario_servidorID     Int?
-  usuario_aluno          Aluno?                   @relation(fields: [usuario_alunoID], references: [id])
-  usuario_alunoID        Int?
-  macroArea              MacroArea                @relation(fields: [macroAreaId], references: [id])
-  macroAreaId            Int
-  area                   Area                     @relation(fields: [areaId], references: [id])
-  areaId                 Int
-  subArea                SubArea                  @relation(fields: [subAreaId], references: [id])
-  subAreaId              Int
-  AtividadeUniversitaria AtividadeUniversitaria[]
+model Usuario {
+  id                Int           @id @default(autoincrement())
+  nome              String
+  email             String        @unique
+  senha             String
+  matricula         String        @unique
+  departamento      Departamento? @relation(fields: [departamentoId], references: [id])
+  departamentoId    Int?
+  eventosCriados    Evento[]
+  tipo              TipoUsuario
+  subAreasInteresse SubArea[]
+  createdAt         DateTime      @default(now()) @map(name: "created_at")
+  updatedAt         DateTime      @updatedAt
 }
+
+// ==============================================================
+
+model Departamento {
+  id      Int       @id @default(autoincrement())
+  nome    String    @unique
+  area    Area      @relation(fields: [areaId], references: [id])
+  areaId  Int
+  Usuario Usuario[]
+  Eventos Evento[]
+}
+
+// ======================== Tabela CAPES ========================
 
 model MacroArea {
-  id             Int             @id @default(autoincrement())
-  nome           String         @unique
-  areasInteresse AreaInteresse[]
-  area           Area[]
+  id       Int    @id @default(autoincrement())
+  tabelaId String @unique
+  nome     String @unique
+  area     Area[]
 }
 
 model Area {
-  id            Int             @id @default(autoincrement())
-  nome          String         @unique
-  macroArea     MacroArea       @relation(fields: [macroAreaId], references: [id])
-  macroAreaId   Int
-  subAreas      SubArea[]
-  AreaInteresse AreaInteresse[]
+  id           Int            @id @default(autoincrement())
+  tabelaId     String         @unique
+  nome         String         @unique
+  macroArea    MacroArea      @relation(fields: [macroAreaId], references: [id])
+  macroAreaId  Int
+  subAreas     SubArea[]
+  Departamento Departamento[]
 }
 
 model SubArea {
-  id            Int             @id @default(autoincrement())
-  nome          String         @unique
-  area          Area            @relation(fields: [areaId], references: [id])
-  areaId        Int
-  eventos       Evento[]
-  AreaInteresse AreaInteresse[]
+  id       Int       @id @default(autoincrement())
+  tabelaId String    @unique
+  nome     String
+  area     Area      @relation(fields: [areaId], references: [id])
+  areaId   Int
+  usuarios Usuario[]
+  eventos  Evento[]
 }
 
+// ==============================================================
+
+// =========================== Eventos ==========================
+
+enum TipoEvento {
+  EventoAcademico
+  EventoCultural
+}
 
 model Evento {
-  id          Int           @id @default(autoincrement())
-  nome        String
-  tipoEvento  String
-  subArea     SubArea       @relation(fields: [subAreaId], references: [id])
-  subAreaId   Int
-  createdAt   DateTime      @default(now()) @map(name: "created_at")
-  updatedAt   DateTime      @default(now()) @map(name: "updated_at")
-  EventoCurto EventoCurto[]
+  id                   Int           @id @default(autoincrement())
+  public_id            String        @unique
+  nome                 String
+  descricao            String
+  tipoEvento           TipoEvento
+  urlMaisInfo          String?
+  urlInscricao         String?
+  criador              Usuario       @relation(fields: [criadorId], references: [id])
+  criadorId            Int
+  eventoMaior          Evento?       @relation(name: "evento", fields: [eventoMaiorId], references: [id])
+  eventoMaiorId        Int?
+  eventosMenores       Evento[]      @relation(name: "evento")
+  departamento         Departamento? @relation(fields: [departamentoId], references: [id])
+  departamentoId       Int?
+  subAreasRelacionadas SubArea[]
+  dataInicio           DateTime
+  dataFim              DateTime
+  createdAt            DateTime      @default(now()) @map(name: "created_at")
 }
 
-model EventoCurto {
-  id           Int      @id @default(autoincrement())
-  nome         String
-  dataInicio   DateTime
-  dataFim      DateTime
-  tipoEvento   String
-  congresso    Evento?  @relation(fields: [congressoId], references: [id])
-  congressoId  Int?
-  orientador   Servidor @relation(fields: [orientadorId], references: [id])
-  orientadorId Int
-  createdAt    DateTime @default(now()) @map(name: "created_at")
-  updatedAt    DateTime @default(now()) @map(name: "updated_at")
-}
-
-model AtividadeUniversitaria {
-  id                Int            @id @default(autoincrement())
-  nome              String
-  dataInicio        DateTime
-  dataFim           DateTime
-  tipoAtividade     String
-  orientador        Servidor?      @relation(fields: [orientadorId], references: [id])
-  aluno             Aluno?         @relation(fields: [alunoId], references: [id])
-  orientadorId      Int?
-  alunoId           Int?
-  areaDeInteresse   AreaInteresse? @relation(fields: [areaDeInteresseID], references: [id])
-  areaDeInteresseID Int?
-  createdAt         DateTime       @default(now()) @map(name: "created_at")
-  updatedAt         DateTime       @default(now()) @map(name: "updated_at")
-}
-
-
+// ==============================================================
