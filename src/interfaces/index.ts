@@ -28,6 +28,14 @@ export interface IUsuario {
   subAreasInteresse: string[];
 }
 
+export interface IUsuarioUpdate {
+  nome?: string;
+  email?: string;
+  senha?: string;
+  subAreasInteresse?: string[];
+}
+
+
 // ==============================================================
 
 // ======================== Tabela CAPES ========================

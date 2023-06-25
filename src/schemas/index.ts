@@ -44,7 +44,12 @@ export const Departamento: any = z.lazy(() =>
   })
 );
 
-export const TipoUsuario = z.enum(["Tecnico", "Docente", "Graduacao", "PosGraduacao"]);
+export const TipoUsuario = z.enum([
+  "Tecnico",
+  "Docente",
+  "Graduacao",
+  "PosGraduacao",
+]);
 
 export const Usuario: any = z.lazy(() =>
   z.object({
@@ -60,6 +65,24 @@ export const Usuario: any = z.lazy(() =>
     updatedAt: z.date(),
   })
 );
+
+export const UsuarioUpdateReturn: any = z.lazy(() =>
+  z.object({
+    id: z.number(),
+    nome: z.string(),
+    email: z.string().email(),
+    senha: z.string(),
+    matricula: z.string(),
+    departamento: Departamento.optional(),
+    departamentoId: z.number().optional(),
+    tipo: TipoUsuario,
+    subAreasInteresse: z.array(SubArea),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+  })
+);
+
+export const listUsersSchema = z.array(UsuarioUpdateReturn);
 
 export const TipoEvento = z.enum(["EventoAcademico", "EventoCultural"]);
 

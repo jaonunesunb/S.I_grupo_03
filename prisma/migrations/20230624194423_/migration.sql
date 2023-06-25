@@ -8,10 +8,12 @@
   - You are about to drop the `AtividadeUniversitaria` table. If the table is not empty, all the data it contains will be lost.
   - You are about to drop the `EventoCurto` table. If the table is not empty, all the data it contains will be lost.
   - You are about to drop the `Servidor` table. If the table is not empty, all the data it contains will be lost.
+  - A unique constraint covering the columns `[public_id]` on the table `Evento` will be added. If there are existing duplicate values, this will fail.
   - Added the required column `criadorId` to the `Evento` table without a default value. This is not possible if the table is not empty.
   - Added the required column `dataFim` to the `Evento` table without a default value. This is not possible if the table is not empty.
   - Added the required column `dataInicio` to the `Evento` table without a default value. This is not possible if the table is not empty.
   - Added the required column `descricao` to the `Evento` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `public_id` to the `Evento` table without a default value. This is not possible if the table is not empty.
   - Changed the type of `tipoEvento` on the `Evento` table. No cast exists, the column would be dropped and recreated, which cannot be done if there is data, since the column is required.
 
 */
@@ -63,6 +65,7 @@ ADD COLUMN     "dataInicio" TIMESTAMP(3) NOT NULL,
 ADD COLUMN     "departamentoId" INTEGER,
 ADD COLUMN     "descricao" TEXT NOT NULL,
 ADD COLUMN     "eventoMaiorId" INTEGER,
+ADD COLUMN     "public_id" TEXT NOT NULL,
 ADD COLUMN     "urlInscricao" TEXT,
 ADD COLUMN     "urlMaisInfo" TEXT,
 DROP COLUMN "tipoEvento",
@@ -83,18 +86,12 @@ DROP TABLE "EventoCurto";
 -- DropTable
 DROP TABLE "Servidor";
 
--- DropEnum
-DROP TYPE "TipoAluno";
-
--- DropEnum
-DROP TYPE "TipoServidor";
-
 -- CreateTable
 CREATE TABLE "Usuario" (
     "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "senha" TEXT NOT NULL,
     "matricula" TEXT NOT NULL,
     "departamentoId" INTEGER,
     "tipo" "TipoUsuario" NOT NULL,
@@ -132,6 +129,9 @@ CREATE UNIQUE INDEX "Usuario_email_key" ON "Usuario"("email");
 CREATE UNIQUE INDEX "Usuario_matricula_key" ON "Usuario"("matricula");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Departamento_nome_key" ON "Departamento"("nome");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_SubAreaToUsuario_AB_unique" ON "_SubAreaToUsuario"("A", "B");
 
 -- CreateIndex
@@ -142,6 +142,9 @@ CREATE UNIQUE INDEX "_EventoToSubArea_AB_unique" ON "_EventoToSubArea"("A", "B")
 
 -- CreateIndex
 CREATE INDEX "_EventoToSubArea_B_index" ON "_EventoToSubArea"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Evento_public_id_key" ON "Evento"("public_id");
 
 -- AddForeignKey
 ALTER TABLE "Usuario" ADD CONSTRAINT "Usuario_departamentoId_fkey" FOREIGN KEY ("departamentoId") REFERENCES "Departamento"("id") ON DELETE SET NULL ON UPDATE CASCADE;
