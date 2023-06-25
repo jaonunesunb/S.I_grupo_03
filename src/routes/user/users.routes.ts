@@ -4,6 +4,7 @@ import {
   loginController,
   getUserController,
   updateUserController,
+  getUserByIDController,
 } from "../../controllers/User/users.controllers";
 import { ensureAuthMiddleware } from "../../middlewares/ensureAuth.middleware";
 
@@ -13,5 +14,6 @@ userRoutes.post("/login", loginController);
 userRoutes.post("/register", registerUserController);
 userRoutes.get("", getUserController);
 userRoutes.patch("/:id", ensureAuthMiddleware, updateUserController);
+userRoutes.get("/:id", ensureAuthMiddleware, getUserByIDController);
 
 export default userRoutes;

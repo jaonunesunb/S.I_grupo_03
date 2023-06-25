@@ -6,6 +6,7 @@ import {
 import { getAllUsersService } from "../../services/getAllUsers.service";
 import { IUsuarioUpdate } from "../../interfaces";
 import { updateUserService } from "../../services/updateUser.service";
+import { getUserByIDService } from "../../services/getUserByID.service";
 
 export const loginController = async (req: Request, res: Response) => {
   try {
@@ -47,15 +48,26 @@ export const updateUserController = async (req: Request, res: Response) => {
 
     const updatedUser = await updateUserService(userId, userData);
 
-    return res.status(200).json({
-      success: true,
-      message: "Usuário atualizado com sucesso",
-      data: updatedUser,
-    });
+    return res.status(200).json(updatedUser);
   } catch (error) {
     console.error("Erro ao atualizar usuário:", error);
     return res.status(500).json({
       error: "Failed to update user",
+    });
+  }
+};
+
+export const getUserByIDController = async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(req.params.id);
+
+    const retrivedUser = await getUserByIDService(userId);
+
+    return res.status(201).json(retrivedUser);
+  } catch (error) {
+    console.error("Erro ao tentar recuperar o usuário:", error);
+    return res.status(500).json({
+      error: "Failed to retrieve user",
     });
   }
 };

@@ -66,21 +66,20 @@ export const Usuario: any = z.lazy(() =>
   })
 );
 
-export const UsuarioUpdateReturn: any = z.lazy(() =>
-  z.object({
-    id: z.number(),
-    nome: z.string(),
-    email: z.string().email(),
-    senha: z.string(),
-    matricula: z.string(),
-    departamento: Departamento.optional(),
-    departamentoId: z.number().optional(),
-    tipo: TipoUsuario,
-    subAreasInteresse: z.array(SubArea),
-    createdAt: z.date(),
-    updatedAt: z.date(),
-  })
-);
+export const UsuarioUpdateReturn = z.object({
+  id: z.number(),
+  nome: z.string(),
+  email: z.string().email(),
+  senha: z.string(),
+  matricula: z.string(),
+  departamento: Departamento.optional(),
+  departamentoId: z.number().optional(),
+  tipo: TipoUsuario,
+  subAreasInteresse: SubArea,
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
 
 export const listUsersSchema = z.array(UsuarioUpdateReturn);
 
