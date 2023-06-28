@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import "dotenv";
 import { AppError } from "../errors/AppError";
+import { ITipoUsuario } from "../interfaces";
 
 export const ensureAuthMiddleware = async (
   req: Request,
@@ -20,6 +21,10 @@ export const ensureAuthMiddleware = async (
       if (error) {
         throw new AppError(error.message, 401);
       }
+      req.user = {
+        id: decoded.id,
+        tipo: decoded.tipo,
+      } as { id: number; tipo: ITipoUsuario };
       return next();
     }
   );

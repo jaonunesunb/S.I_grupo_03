@@ -7,24 +7,31 @@ export interface IUsuarioLogin {
   senha: string;
 }
 
+export enum ITipoUsuario {
+  Tecnico,
+  Docente,
+  Graduacao,
+  PosGraduacao,
+}
+
 export interface IUsuarioRegistrar {
   nome: string;
   email: string;
   senha: string;
   matricula: string;
   departamento: string;
-  tipoUsuario: TipoUsuario
+  tipoUsuario: TipoUsuario;
   subAreasInteresse: string[];
 }
 
 export interface IUsuario {
-  id: number,
+  id: number;
   nome: string;
   email: string;
   senha: string;
   matricula: string;
   departamento: string;
-  tipoUsuario: TipoUsuario
+  tipoUsuario: TipoUsuario;
   subAreasInteresse: string[];
 }
 
@@ -34,7 +41,6 @@ export interface IUsuarioUpdate {
   senha?: string;
   subAreasInteresse?: string[];
 }
-
 
 // ==============================================================
 
@@ -65,7 +71,7 @@ export interface SubArea {
 
 export enum TipoEvento {
   EventoAcademico,
-  EventoCultural
+  EventoCultural,
 }
 
 export interface IEvento {
