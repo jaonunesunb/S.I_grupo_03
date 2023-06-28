@@ -7,6 +7,7 @@ import { getAllUsersService } from "../../services/user/getAllUsers.service";
 import { IUsuarioUpdate } from "../../interfaces";
 import { updateUserService } from "../../services/user/updateUser.service";
 import { getUserByIDService } from "../../services/user/getUserByID.service";
+import { deleteUserService } from "../../services/user/deleteUser.service";
 
 export const loginController = async (req: Request, res: Response) => {
   try {
@@ -70,4 +71,10 @@ export const getUserByIDController = async (req: Request, res: Response) => {
       error: "Failed to retrieve user",
     });
   }
+};
+
+export const deleteUserController = async (req: Request, res: Response) => {
+  const id: number = parseInt(req.params.id);
+  const deletedEvent = await deleteUserService(id);
+  return res.status(204).json(deletedEvent);
 };
