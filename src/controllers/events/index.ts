@@ -1,16 +1,12 @@
 import { Request, Response } from "express";
-import { loginService } from "../../services/usuario.service";
+import { createEventService } from "../../services/events/createEvent.service";
 
 export const createEventController = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    const result = await createEventService(req.body);
 
-    const result = await loginService({ email, password });
-
-    // Return o token
-    res.json(result);
+    return res.json(result);
   } catch (error) {
-    console.error("Error during login:", error);
-    res.status(500).json({ error: "An error occurred during login" });
+    res.status(500).json({ error: "An error occurred during event creation" });
   }
 };
