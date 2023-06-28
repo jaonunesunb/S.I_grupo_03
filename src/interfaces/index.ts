@@ -75,6 +75,7 @@ export enum TipoEvento {
 }
 
 export interface IEvento {
+  departamentoId: undefined;
   nome: string;
   descricao: string;
   tipoEvento: TipoEvento;

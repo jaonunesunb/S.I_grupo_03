@@ -6,7 +6,8 @@ declare global {
     interface Request {
       user: {
         id: number;
-        tipo: ITipoUsuario
+        nome: string;
+        tipo: ITipoUsuario;
       };
     }
   }

@@ -1,43 +1,42 @@
-// import { PrismaClient } from "@prisma/client";
-// import jwt from "jsonwebtoken";
-// import { compare } from "bcryptjs";
-// import { IUser } from "../interfaces";
-// import { AppError } from "../errors/AppError";
+import { PrismaClient, TipoEvento } from "@prisma/client";
+import { IEvento } from "../../interfaces";
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
-// export const loginService = async (data: IUser) => {
-//   try {
-//     const userExist = await prisma.aluno.findUnique({
-//       where: { email: data.email },
-//     });
+export const createEventService = async (data: IEvento) => {
+  try {
+    const creator = await prisma.usuario.findUnique({
+      where: { email: data.criadorEmail },
+    });
 
-//     if (!userExist) {
-//       throw new AppError("Email or password invalid", 403);
-//     }
+    const majorEvent = await prisma.evento.findUnique({
+      where: { id: parseInt(data.eventoMaiorId) },
+    });
 
-//     const passwordMatch = await compare(data.password, userExist.password);
+    const event = await prisma.evento.create({
+      data: {
+        nome: data.nome,
+        descricao: data.descricao,
+        tipoEvento: data.tipoEvento as TipoEvento,
+        urlMaisInfo: data.urlMaisInfo,
+        urlInscricao: data.urlMaisInfo,
+        criador: {
+          connect: { id: creator?.id },
+        },
+        eventoMaiorId: parseInt(data.eventoMaiorId),
+        eventosMenores: {
+          connect: [{ id: majorEvent?.id }],
+        },
+        departamentoId: data.departamentoId,
+        subAreasRelacionadas: data.subAreasRelacionadas,
+        dataInicio: data.dataInicio,
+        dataFim: data.dataFim,
+      },
+    });
 
-//     if (!passwordMatch) {
-//       throw new AppError("Email or password invalid", 403);
-//     }
-
-//     const token = jwt.sign(
-//       {
-//         id: userExist.id,
-//       },
-//       process.env.SECRET_KEY as string,
-//       {
-//         subject: String(userExist.id),
-//         expiresIn: "24h",
-//       }
-//     );
-
-//     return { token };
-//   } catch (error) {
-//     // Será que esse try and catch é uma boa ideia?
-//     // Não é melhor deixar falhar mesmo não?
-//     console.error("Error during login:", error);
-//     throw error;
-//   }
-// };
+    return event;
+  } catch (error) {
+    console.error("Error during event creation:", error);
+    throw error;
+  }
+};

@@ -23,8 +23,9 @@ export const ensureAuthMiddleware = async (
       }
       req.user = {
         id: decoded.id,
+        nome: decoded.nome,
         tipo: decoded.tipo,
-      } as { id: number; tipo: ITipoUsuario };
+      } as { id: number; nome: string; tipo: ITipoUsuario };
       return next();
     }
   );
