@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import {
   loginService,
   registerUserService,
-} from "../../services/usuario.service";
-import { getAllUsersService } from "../../services/getAllUsers.service";
+} from "../../services/user/usuario.service";
+import { getAllUsersService } from "../../services/user/getAllUsers.service";
 import { IUsuarioUpdate } from "../../interfaces";
-import { updateUserService } from "../../services/updateUser.service";
-import { getUserByIDService } from "../../services/getUserByID.service";
+import { updateUserService } from "../../services/user/updateUser.service";
+import { getUserByIDService } from "../../services/user/getUserByID.service";
 
 export const loginController = async (req: Request, res: Response) => {
   try {

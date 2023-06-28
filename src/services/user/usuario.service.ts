@@ -2,17 +2,16 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { IUsuario, IUsuarioRegistrar, IUsuarioLogin } from "../interfaces";
-import { AppError } from "../errors/AppError";
-import { Usuario } from "../schemas";
-
+import { IUsuario, IUsuarioRegistrar, IUsuarioLogin } from "../../interfaces";
+import { AppError } from "../../errors/AppError";
+import { Usuario } from "../../schemas";
 
 const prisma = new PrismaClient();
 
 const hashPassword = async (password: string) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  
+
   return hashedPassword;
 };
 

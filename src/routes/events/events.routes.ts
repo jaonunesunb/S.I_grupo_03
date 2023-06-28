@@ -1,8 +1,35 @@
 import express from "express";
-import { createEventController } from "../../controllers/events";
+import {
+  createEventController,
+  deleteEventController,
+  getAllEventsController,
+  getEventByIDController,
+  updateEventController,
+} from "../../controllers/events";
+import ensureIsADM from "../../middlewares/ensureIsADM.middleware";
+import { ensureAuthMiddleware } from "../../middlewares/ensureAuth.middleware";
 
 const eventRoutes = express.Router();
 
-eventRoutes.post("/create", createEventController);
+eventRoutes.post(
+  "/create",
+  ensureAuthMiddleware,
+  ensureIsADM,
+  createEventController
+);
+eventRoutes.get("", ensureAuthMiddleware, getAllEventsController);
+eventRoutes.patch(
+  "/:id",
+  ensureAuthMiddleware,
+  ensureIsADM,
+  updateEventController
+);
+eventRoutes.get("/:id", ensureAuthMiddleware, getEventByIDController);
+eventRoutes.delete(
+  "/:id",
+  ensureAuthMiddleware,
+  ensureIsADM,
+  deleteEventController
+);
 
 export default eventRoutes;

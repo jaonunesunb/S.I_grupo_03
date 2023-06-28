@@ -17,7 +17,7 @@ export const createEventService = async (data: IEvento) => {
       data: {
         nome: data.nome,
         descricao: data.descricao,
-        tipoEvento: data.tipoEvento as TipoEvento,
+        tipoEvento: data.tipoEvento,
         urlMaisInfo: data.urlMaisInfo,
         urlInscricao: data.urlMaisInfo,
         criador: {

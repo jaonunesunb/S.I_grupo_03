@@ -1,18 +1,17 @@
 import { PrismaClient } from "@prisma/client";
-import { listUsersSchema, UsuarioUpdateReturn, SubArea } from "../schemas";
+import { listUsersSchema, UsuarioUpdateReturn, SubArea } from "../../schemas";
 
 const prisma = new PrismaClient();
 
-export const getUserByIDService = async (id: number) => {
+export const getAllUsersService = async () => {
   try {
-    const user = await prisma.usuario.findUnique({
-      where: { id },
+    const users = await prisma.usuario.findMany({
       include: {
         subAreasInteresse: true,
       },
     });
 
-    return user;
+    return users;
   } catch (error) {
     console.error(error);
     throw error;

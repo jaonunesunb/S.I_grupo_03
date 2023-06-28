@@ -82,11 +82,26 @@ export interface IEvento {
   urlMaisInfo?: string;
   urlInscricao?: string;
   criadorEmail: string;
-  eventoMaiorId: string;
+  eventoMaiorId?: string;
   departamentoNome: string;
   dataInicio: Date;
   dataFim: Date;
   subAreasRelacionadas: SubArea[];
+}
+
+export interface IEventoUpdate {
+  departamentoId?: undefined;
+  nome?: string;
+  descricao?: string;
+  tipoEvento?: TipoEvento;
+  urlMaisInfo?: string;
+  urlInscricao?: string;
+  criadorEmail?: string;
+  eventoMaiorId?: string;
+  departamentoNome?: string;
+  dataInicio?: Date;
+  dataFim?: Date;
+  subAreasRelacionadas?: SubArea[];
 }
 
 // ==============================================================

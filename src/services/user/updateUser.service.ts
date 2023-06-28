@@ -1,5 +1,5 @@
-import { PrismaClient, Usuario } from '@prisma/client';
-import { IUsuarioUpdate } from '../interfaces';
+import { PrismaClient, Usuario } from "@prisma/client";
+import { IUsuarioUpdate } from "../../interfaces";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
@@ -7,17 +7,20 @@ const prisma = new PrismaClient();
 const hashPassword = async (password: string) => {
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  
+
   return hashedPassword;
 };
 
-export const updateUserService = async (id: number, dataBody: IUsuarioUpdate) => {
+export const updateUserService = async (
+  id: number,
+  dataBody: IUsuarioUpdate
+) => {
   try {
     const usuarioExistente = await prisma.usuario.findUnique({ where: { id } });
     const { subAreasInteresse, email, nome, senha } = dataBody;
 
     if (!usuarioExistente) {
-      throw new Error('Usuário não encontrado');
+      throw new Error("Usuário não encontrado");
     }
 
     const subAreas = await prisma.subArea.findMany({
@@ -25,7 +28,7 @@ export const updateUserService = async (id: number, dataBody: IUsuarioUpdate) =>
     });
 
     const updateUser = await prisma.usuario.update({
-      where: {id},
+      where: { id },
       data: {
         nome: dataBody.nome,
         email: dataBody.email,
@@ -40,8 +43,7 @@ export const updateUserService = async (id: number, dataBody: IUsuarioUpdate) =>
     });
     return updateUser;
   } catch (error) {
-    
-    console.error('Erro ao atualizar o usuário:', error);
-    throw error; 
+    console.error("Erro ao atualizar o usuário:", error);
+    throw error;
   }
 };
