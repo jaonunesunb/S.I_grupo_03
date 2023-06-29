@@ -21,7 +21,6 @@ export const ensureAuthMiddleware = async (
       if (error) {
         throw new AppError(error.message, 401);
       }
-      console.log("decoded", decoded)
       req.user = {
         id: decoded.id,
         email: decoded.email,

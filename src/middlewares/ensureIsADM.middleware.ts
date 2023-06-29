@@ -4,7 +4,6 @@ import { TipoUsuario } from "@prisma/client";
 
 const ensureIsADM = (req: Request, res: Response, next: NextFunction) => {
   const tipo = req.user.tipo;
-  console.log("user", req.user)
   if (tipo !== TipoUsuario.Tecnico && tipo !== TipoUsuario.Docente) {
     throw new AppError(
       "You don't have permission to access this resource",
