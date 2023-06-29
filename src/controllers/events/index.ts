@@ -27,7 +27,7 @@ export const getAllEventsController = async (req: Request, res: Response) => {
 
 export const getEventByIDController = async (req: Request, res: Response) => {
   try {
-    const eventID = parseInt(req.params.id);
+    const eventID = req.params.id;
 
     const retrivedUser = await getEventByIDService(eventID);
 

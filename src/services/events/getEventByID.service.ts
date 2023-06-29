@@ -2,10 +2,10 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getEventByIDService = async (id: number) => {
+export const getEventByIDService = async (id: string) => {
   try {
-    const event = await prisma.usuario.findUnique({
-      where: { id },
+    const event = await prisma.evento.findUnique({
+      where: { public_id: id },
       include: {
         criador: true,
         departamento: true,
