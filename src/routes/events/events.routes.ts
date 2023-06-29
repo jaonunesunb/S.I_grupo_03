@@ -5,6 +5,7 @@ import {
   getAllEventsController,
   getEventByIDController,
   updateEventController,
+  getFilteredEventsController,
 } from "../../controllers/events";
 import ensureIsADM from "../../middlewares/ensureIsADM.middleware";
 import { ensureAuthMiddleware } from "../../middlewares/ensureAuth.middleware";
@@ -18,6 +19,7 @@ eventRoutes.post(
   createEventController
 );
 eventRoutes.get("", ensureAuthMiddleware, getAllEventsController);
+eventRoutes.get("/filtered", ensureAuthMiddleware, getFilteredEventsController);
 eventRoutes.patch(
   "/:id",
   ensureAuthMiddleware,

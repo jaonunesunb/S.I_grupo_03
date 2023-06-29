@@ -4,6 +4,8 @@ import { getAllEventsService } from "../../services/events/getAllEvents.service"
 import { getEventByIDService } from "../../services/events/getEventByID.service";
 import { updateEventService } from "../../services/events/updateEvent.service";
 import { deleteEventService } from "../../services/events/deleteEvent.service";
+import { getFilteredEvents } from "../../services/events/getFilteredEvents.service";
+import { TipoEvento } from "@prisma/client";
 
 export const createEventController = async (req: Request, res: Response) => {
   try {
@@ -19,6 +21,92 @@ export const getAllEventsController = async (req: Request, res: Response) => {
   try {
     const users = await getAllEventsService();
     res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ error: "Failed to recover events" });
+  }
+};
+
+function isValidDate(date: Date): boolean {
+  return date instanceof Date && !isNaN(date.getTime());
+}
+
+export const getFilteredEventsController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    interface QueryParams {
+      page: string;
+      count: string;
+      nome?: string;
+      tipo?: string;
+      dataInicio?: string;
+      dataFim?: string;
+      departamento?: string;
+      subAreasRelacionadas?: string[] | string;
+    }
+
+    // Access the query parameters and perform type-checking
+    const queryParams: QueryParams = req.query as unknown as QueryParams;
+    const {
+      page,
+      count,
+      nome,
+      tipo,
+      dataInicio,
+      dataFim,
+      departamento,
+      subAreasRelacionadas,
+    } = queryParams;
+
+    if (tipo && !["EventoAcademico", "EventoCultural"].includes(tipo)) {
+      return res.status(400).json({
+        error: "Tipo is not one of EventoAcademico or EventoCultural",
+      });
+    }
+
+    let dataInicioTyped: Date | undefined = undefined;
+    if (dataInicio) {
+      dataInicioTyped = new Date(dataInicio);
+
+      if (!isValidDate(dataInicioTyped)) {
+        return res.status(400).json({
+          error:
+            "dataInicio is not formatted correctly! Try YYYY-MM-DD hh-mm-ss",
+        });
+      }
+    }
+
+    let dataFimTyped: Date | undefined = undefined;
+    if (dataFim) {
+      dataFimTyped = new Date(dataFim);
+
+      if (!isValidDate(dataFimTyped)) {
+        return res.status(400).json({
+          error: "dataFim is not formatted correctly! Try YYYY-MM-DD hh-mm-ss",
+        });
+      }
+    }
+
+    let subAreasRelacionadasTyped: string[] | undefined;
+    if (subAreasRelacionadas && !Array.isArray(subAreasRelacionadas)) {
+      subAreasRelacionadasTyped = [subAreasRelacionadas];
+    } else {
+      subAreasRelacionadasTyped = subAreasRelacionadas as string[];
+    }
+
+    const events = await getFilteredEvents(
+      parseInt(page),
+      parseInt(count),
+      nome,
+      tipo as TipoEvento | undefined,
+      dataInicioTyped,
+      dataFimTyped,
+      departamento,
+      subAreasRelacionadasTyped
+    );
+    res.status(200).json(events);
   } catch (error) {
     console.error(error);
     res.status(404).json({ error: "Failed to recover events" });
