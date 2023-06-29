@@ -21,11 +21,12 @@ export const ensureAuthMiddleware = async (
       if (error) {
         throw new AppError(error.message, 401);
       }
+      console.log("decoded", decoded)
       req.user = {
         id: decoded.id,
-        nome: decoded.nome,
+        email: decoded.email,
         tipo: decoded.tipo,
-      } as { id: number; nome: string; tipo: ITipoUsuario };
+      };
       return next();
     }
   );

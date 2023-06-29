@@ -1,4 +1,4 @@
-import { TipoUsuario } from "@prisma/client";
+import { TipoUsuario, TipoEvento } from "@prisma/client";
 
 // ========================== Usuários ==========================
 
@@ -69,13 +69,7 @@ export interface SubArea {
 
 // =========================== Eventos ==========================
 
-export enum TipoEvento {
-  EventoAcademico,
-  EventoCultural,
-}
-
 export interface IEvento {
-  departamentoId: undefined;
   nome: string;
   descricao: string;
   tipoEvento: TipoEvento;
@@ -84,9 +78,9 @@ export interface IEvento {
   criadorEmail: string;
   eventoMaiorId?: string;
   departamentoNome: string;
-  dataInicio: Date;
-  dataFim: Date;
-  subAreasRelacionadas: SubArea[];
+  dataInicio: string;
+  dataFim: string;
+  subAreasRelacionadas: string[];
 }
 
 export interface IEventoUpdate {

@@ -1,13 +1,13 @@
 import * as express from "express";
-import { ITipoUsuario } from "../../interfaces";
+import { TipoUsuario } from "@prisma/client";
 
 declare global {
   namespace Express {
     interface Request {
       user: {
         id: number;
-        nome: string;
-        tipo: ITipoUsuario;
+        email: string;
+        tipo: TipoUsuario;
       };
     }
   }

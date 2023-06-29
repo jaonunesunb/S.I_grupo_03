@@ -40,6 +40,9 @@ export const loginService = async (data: IUsuarioLogin) => {
     const token = jwt.sign(
       {
         id: user.id,
+        nome: user.nome,
+        email: user.email,
+        tipo: user.tipo
       },
       process.env.SECRET_KEY as string,
       {
