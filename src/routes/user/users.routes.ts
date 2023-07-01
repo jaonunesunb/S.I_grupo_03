@@ -5,6 +5,7 @@ import {
   getUserController,
   updateUserController,
   getUserByIDController,
+  getUserEventsController,
 } from "../../controllers/User/users.controllers";
 import { ensureAuthMiddleware } from "../../middlewares/ensureAuth.middleware";
 import { deleteUserService } from "../../services/user/deleteUser.service";
@@ -16,6 +17,7 @@ userRoutes.post("/register", registerUserController);
 userRoutes.get("", getUserController);
 userRoutes.patch("/:id", ensureAuthMiddleware, updateUserController);
 userRoutes.get("/:id", ensureAuthMiddleware, getUserByIDController);
+userRoutes.get("/events/:email", ensureAuthMiddleware, getUserEventsController);
 userRoutes.delete("/:id", ensureAuthMiddleware, deleteUserService);
 
 export default userRoutes;

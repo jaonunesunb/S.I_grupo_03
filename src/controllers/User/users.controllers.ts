@@ -8,6 +8,7 @@ import { IUsuarioUpdate } from "../../interfaces";
 import { updateUserService } from "../../services/user/updateUser.service";
 import { getUserByIDService } from "../../services/user/getUserByID.service";
 import { deleteUserService } from "../../services/user/deleteUser.service";
+import { getUserEventsService } from "../../services/user/getUserEvents.service";
 
 export const loginController = async (req: Request, res: Response) => {
   try {
@@ -63,6 +64,34 @@ export const getUserByIDController = async (req: Request, res: Response) => {
     const userId = parseInt(req.params.id);
 
     const retrivedUser = await getUserByIDService(userId);
+
+    return res.status(201).json(retrivedUser);
+  } catch (error) {
+    console.error("Erro ao tentar recuperar o usuário:", error);
+    return res.status(500).json({
+      error: "Failed to retrieve user",
+    });
+  }
+};
+
+export const getUserEventsController = async (req: Request, res: Response) => {
+  try {
+    interface QueryParams {
+      page: string;
+      count: string;
+    }
+
+    // Access the query parameters and perform type-checking
+    const queryParams: QueryParams = req.query as unknown as QueryParams;
+    const { page, count } = queryParams;
+
+    const userEmail = req.params.email;
+
+    const retrivedUser = await getUserEventsService(
+      userEmail,
+      parseInt(page),
+      parseInt(count)
+    );
 
     return res.status(201).json(retrivedUser);
   } catch (error) {
