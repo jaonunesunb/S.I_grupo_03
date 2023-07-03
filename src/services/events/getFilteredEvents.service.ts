@@ -14,6 +14,14 @@ export const getFilteredEvents = async (
   subAreasRelacionadas?: string[]
 ) => {
   try {
+    console.log({
+      nome,
+      tipo,
+      dataInicio,
+      dataFim,
+      departamento,
+      subAreasRelacionadas,
+    });
     const events = await prisma.evento.findMany({
       skip: count * (page - 1),
       take: count,

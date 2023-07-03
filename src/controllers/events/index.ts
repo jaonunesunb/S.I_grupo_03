@@ -68,7 +68,7 @@ export const getFilteredEventsController = async (
 
     let dataInicioTyped: Date | undefined = undefined;
     if (dataInicio) {
-      dataInicioTyped = new Date(dataInicio);
+      dataInicioTyped = new Date(dataInicio.trim().replace(/^"|"$/g, ''));
 
       if (!isValidDate(dataInicioTyped)) {
         return res.status(400).json({
@@ -80,7 +80,7 @@ export const getFilteredEventsController = async (
 
     let dataFimTyped: Date | undefined = undefined;
     if (dataFim) {
-      dataFimTyped = new Date(dataFim);
+      dataFimTyped = new Date(dataFim.trim().replace(/^"|"$/g, ''));
 
       if (!isValidDate(dataFimTyped)) {
         return res.status(400).json({
@@ -91,19 +91,20 @@ export const getFilteredEventsController = async (
 
     let subAreasRelacionadasTyped: string[] | undefined;
     if (subAreasRelacionadas && !Array.isArray(subAreasRelacionadas)) {
-      subAreasRelacionadasTyped = [subAreasRelacionadas];
+      subAreasRelacionadasTyped = [subAreasRelacionadas.trim().replace(/^"|"$/g, '')];
     } else {
-      subAreasRelacionadasTyped = subAreasRelacionadas as string[];
+      subAreasRelacionadasTyped = subAreasRelacionadas as (string[] | undefined);
+      subAreasRelacionadasTyped?.map(subArea => subArea.trim().replace(/^"|"$/g, ''))
     }
 
     const events = await getFilteredEvents(
       parseInt(page),
       parseInt(count),
-      nome,
+      nome?.trim().replace(/^"|"$/g, ''),
       tipo as TipoEvento | undefined,
       dataInicioTyped,
       dataFimTyped,
-      departamento,
+      departamento?.trim().replace(/^"|"$/g, ''),
       subAreasRelacionadasTyped
     );
     res.status(200).json(events);
