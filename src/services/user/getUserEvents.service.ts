@@ -48,14 +48,15 @@ export const getUserEventsService = async (
         subAreasRelacionadas: {
           include: { area: { include: { macroArea: true } } },
         },
+        criador: true
       },
     });
 
     // Criar dicionario com todos eventos
     // Cada evento vai ter um score 100 * s + 10 * a + m
     // s = numero de subAreas em comum
-    // a = numero de areas em comum (apenas considerado se s == 0)
-    // m = numero de macroAreas em comum (apenas considerado se a == 0)
+    // a = numero de areas em comum
+    // m = numero de macroAreas em comum
 
     // As subAreasInteresse estarao em um set
     // Ou seja subAreasInteresse.has() é O(1) em complexidade

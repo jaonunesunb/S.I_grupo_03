@@ -18,8 +18,8 @@ eventRoutes.post(
   ensureIsADM,
   createEventController
 );
-eventRoutes.get("", ensureAuthMiddleware, getAllEventsController);
-eventRoutes.get("/filtered", ensureAuthMiddleware, getFilteredEventsController);
+eventRoutes.get("", getAllEventsController);
+eventRoutes.get("/filtered", getFilteredEventsController);
 eventRoutes.patch(
   "/:id",
   ensureAuthMiddleware,

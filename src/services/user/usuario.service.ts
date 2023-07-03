@@ -42,7 +42,7 @@ export const loginService = async (data: IUsuarioLogin) => {
         id: user.id,
         nome: user.nome,
         email: user.email,
-        tipo: user.tipo
+        tipo: user.tipo,
       },
       process.env.SECRET_KEY as string,
       {
@@ -51,7 +51,13 @@ export const loginService = async (data: IUsuarioLogin) => {
       }
     );
 
-    return { token };
+    return {
+      token,
+      email: user.email,
+      nome: user.nome,
+      matricula: user.matricula,
+      tipo: user.tipo,
+    };
   } catch (error) {
     console.error("Error during login:", error);
     throw error;
