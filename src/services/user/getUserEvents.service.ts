@@ -28,8 +28,8 @@ export const getUserEventsService = async (
     user.subAreasInteresse.map(({ area }) => area.macroArea.id)
   );
 
-  // Pegar data atual
-  const dataAtual = new Date();
+  // Pegar data atual sem horas
+  const dataAtual = new Date(new Date().toDateString());
 
   // Todos os eventos que tem pelo menos uma subArea
   // de interesse do nosso usuario
@@ -39,7 +39,7 @@ export const getUserEventsService = async (
   // Ordenado por data de começo do maior até o menor
   let eventos = await prisma.evento.findMany({
     take: 1_000,
-    where: { dataInicio: { gte: dataAtual } },
+    where: { dataFim: { gte: dataAtual } },
     orderBy: { dataInicio: "desc" },
     include: {
       subAreasRelacionadas: {

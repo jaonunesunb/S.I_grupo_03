@@ -15,9 +15,19 @@ const hashPassword = async (password: string) => {
   return hashedPassword;
 };
 
-const userIfExists = async (email: string) => {
-  const user = await prisma.usuario.findUnique({
-    where: { email: email },
+const userIfExists = async (
+  email: string,
+  name?: string,
+  matricula?: string
+) => {
+  const user = await prisma.usuario.findFirst({
+    where: {
+      OR: [
+        { email: email },
+        { nome: name || "" },
+        { matricula: matricula || "" },
+      ],
+    },
   });
 
   return user;
@@ -62,10 +72,10 @@ export const loginService = async (data: IUsuarioLogin) => {
 export const registerUserService = async (
   dataBody: IUsuarioRegistrar
 ): Promise<IUsuario> => {
-  const { subAreasInteresse, email } = dataBody;
+  const { subAreasInteresse, email, nome, matricula } = dataBody;
 
   // Verificar se o email ou matricula já está cadastrado
-  const existingUser = await userIfExists(email);
+  const existingUser = await userIfExists(email, nome, matricula);
 
   if (existingUser) {
     throw new AppError("Email já cadastrado", 400);
