@@ -6,6 +6,7 @@ import { updateEventService } from "../../services/events/updateEvent.service";
 import { deleteEventService } from "../../services/events/deleteEvent.service";
 import { getFilteredEvents } from "../../services/events/getFilteredEvents.service";
 import { TipoEvento } from "@prisma/client";
+import { AppError } from "../../errors/AppError";
 
 export const createEventController = async (req: Request, res: Response) => {
   try {
@@ -109,8 +110,12 @@ export const getFilteredEventsController = async (
     );
     res.status(200).json(events);
   } catch (error) {
-    console.error(error);
-    res.status(404).json({ error: "Failed to recover events" });
+    if (error instanceof AppError) {
+      res.status(error.statusCode).json({ error: error.message });
+    } else {
+      console.error("Error during getFilteredEventsController:", error);
+      res.status(500).json({ error: "Failed to recover filtered events" });
+    }
   }
 };
 
@@ -122,10 +127,12 @@ export const getEventByIDController = async (req: Request, res: Response) => {
 
     return res.status(201).json(retrivedUser);
   } catch (error) {
-    console.error("Erro ao tentar recuperar o evento:", error);
-    return res.status(500).json({
-      error: "Failed to retrieve event",
-    });
+    if (error instanceof AppError) {
+      res.status(error.statusCode).json({ error: error.message });
+    } else {
+      console.error("Error during getEventByIDController:", error);
+      res.status(500).json({ error: "Failed to recover event" });
+    }
   }
 };
 
@@ -138,15 +145,18 @@ export const updateEventController = async (req: Request, res: Response) => {
 
     return res.status(200).json(updatedUser);
   } catch (error) {
-    console.error("Erro ao atualizar evento:", error);
-    return res.status(500).json({
-      error: "Failed to update event",
-    });
+    if (error instanceof AppError) {
+      res.status(error.statusCode).json({ error: error.message });
+    } else {
+      console.error("Error during updateEventController:", error);
+      res.status(500).json({ error: "Failed to update event" });
+    }
   }
 };
 
 export const deleteEventController = async (req: Request, res: Response) => {
   const id: number = parseInt(req.params.id);
   const deletedEvent = await deleteEventService(id);
+  
   return res.status(204).json(deletedEvent);
 };
