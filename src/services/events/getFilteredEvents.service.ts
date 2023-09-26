@@ -19,8 +19,8 @@ export const getFilteredEvents = async (
     where: {
       ...(nome ? { nome: { contains: nome } } : {}),
       ...(tipo ? { tipoEvento: tipo } : {}),
-      ...(dataInicio ? { dataInicio: { gte: dataInicio } } : {}),
-      ...(dataFim ? { dataFim: { lte: dataFim } } : {}),
+      ...(dataInicio ? { dataFim: { gte: dataInicio } } : {}),
+      ...(dataFim ? { dataInicio: { lte: dataFim } } : {}),
       ...(departamento ? { departamento: { nome: departamento } } : {}),
       ...(subAreasRelacionadas
         ? {
